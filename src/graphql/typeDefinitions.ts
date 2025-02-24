@@ -1,18 +1,33 @@
 export const typeDefs = /* GraphQL */ `
-  input CreateSomethingInput {
-    name: String!
-  }
-
-  type Something {
+  type Todo {
     id: ID!
-    name: String!
+    title: String!
+    completed: Boolean!
+    createdAt: String!
+    updatedAt: String!
   }
 
-  type Mutation {
-    createSomething(input: CreateSomethingInput!): Something!
+  input CreateTodoInput {
+    title: String!
+  }
+
+  input UpdateTodoInput {
+    id: ID!
+    title: String!
   }
 
   type Query {
     hello: String
+    getTodos: [Todo!]!           
+    getTodoById(id: ID!): Todo   
+    getCompletedTodos: [Todo!]!  
+    getIncompleteTodos: [Todo!]! 
+  }
+
+  type Mutation {
+    createTodo(input: CreateTodoInput!): Todo! 
+    updateTodoTitle(input: UpdateTodoInput!): Todo! 
+    toggleTodoCompletion(id: ID!): Todo! 
+    deleteTodo(id: ID!): Boolean! 
   }
 `;
