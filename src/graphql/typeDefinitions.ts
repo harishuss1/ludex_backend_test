@@ -21,7 +21,7 @@ scalar DateTime
 
   type Query {
     hello: String
-    getTodos: [Todo!]!           
+    getTodos(limit: Int = 10, offset: Int = 0): [Todo!]!           
     getTodoById(id: ID!): Todo   
     getCompletedTodos: [Todo!]!  
     getIncompleteTodos: [Todo!]! 

@@ -63,6 +63,12 @@ export type QueryGetTodoByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
+
+export type QueryGetTodosArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Todo = {
   __typename?: 'Todo';
   completed: Scalars['Boolean']['output'];
@@ -152,6 +158,7 @@ export type ResolversTypes = {
   CreateTodoInput: CreateTodoInput;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -165,6 +172,7 @@ export type ResolversParentTypes = {
   CreateTodoInput: CreateTodoInput;
   DateTime: Scalars['DateTime']['output'];
   ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
@@ -187,7 +195,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getCompletedTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
   getIncompleteTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
   getTodoById?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryGetTodoByIdArgs, 'id'>>;
-  getTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
+  getTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryGetTodosArgs, 'limit' | 'offset'>>;
   hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
