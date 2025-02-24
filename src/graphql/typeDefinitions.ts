@@ -2,10 +2,26 @@ export const typeDefs = /* GraphQL */ `
 
 scalar DateTime
 
-enum SortOrder {
-  asc
-  desc
-}
+  enum SortOrder {
+    asc
+    desc
+  }
+    
+  type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+  }
+
+  type TodoEdge {
+    cursor: String!
+    node: Todo!
+  }
+
+  type TodoConnection {
+    edges: [TodoEdge!]!
+    pageInfo: PageInfo!
+    totalCount: Int!
+  }
 
   type Todo {
     id: ID!
@@ -27,7 +43,7 @@ enum SortOrder {
   
   type Query {
     hello: String
-    getTodos(limit: Int = 10, offset: Int = 0, completed: Boolean, sortOrder: SortOrder = desc): [Todo!]!
+    getTodos(first: Int = 10, after: String, completed: Boolean, sortOrder: SortOrder = desc): TodoConnection!
     getTodoById(id: ID!): Todo   
     getCompletedTodos: [Todo!]!  
     getIncompleteTodos: [Todo!]! 

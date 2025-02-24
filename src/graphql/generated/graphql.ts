@@ -49,12 +49,18 @@ export type MutationUpdateTodoTitleArgs = {
   input: UpdateTodoInput;
 };
 
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getCompletedTodos: Array<Todo>;
   getIncompleteTodos: Array<Todo>;
   getTodoById?: Maybe<Todo>;
-  getTodos: Array<Todo>;
+  getTodos: TodoConnection;
   hello?: Maybe<Scalars['String']['output']>;
 };
 
@@ -65,9 +71,9 @@ export type QueryGetTodoByIdArgs = {
 
 
 export type QueryGetTodosArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
   completed?: InputMaybe<Scalars['Boolean']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   sortOrder?: InputMaybe<SortOrder>;
 };
 
@@ -83,6 +89,19 @@ export type Todo = {
   id: Scalars['ID']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
+};
+
+export type TodoConnection = {
+  __typename?: 'TodoConnection';
+  edges: Array<TodoEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type TodoEdge = {
+  __typename?: 'TodoEdge';
+  cursor: Scalars['String']['output'];
+  node: Todo;
 };
 
 export type UpdateTodoInput = {
@@ -167,10 +186,13 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  PageInfo: ResolverTypeWrapper<PageInfo>;
   Query: ResolverTypeWrapper<{}>;
   SortOrder: SortOrder;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   Todo: ResolverTypeWrapper<Todo>;
+  TodoConnection: ResolverTypeWrapper<TodoConnection>;
+  TodoEdge: ResolverTypeWrapper<TodoEdge>;
   UpdateTodoInput: UpdateTodoInput;
 };
 
@@ -182,9 +204,12 @@ export type ResolversParentTypes = {
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
   Mutation: {};
+  PageInfo: PageInfo;
   Query: {};
   String: Scalars['String']['output'];
   Todo: Todo;
+  TodoConnection: TodoConnection;
+  TodoEdge: TodoEdge;
   UpdateTodoInput: UpdateTodoInput;
 };
 
@@ -199,11 +224,17 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   updateTodoTitle?: Resolver<ResolversTypes['Todo'], ParentType, ContextType, RequireFields<MutationUpdateTodoTitleArgs, 'input'>>;
 };
 
+export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = {
+  endCursor?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  hasNextPage?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getCompletedTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
   getIncompleteTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
   getTodoById?: Resolver<Maybe<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryGetTodoByIdArgs, 'id'>>;
-  getTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType, RequireFields<QueryGetTodosArgs, 'limit' | 'offset' | 'sortOrder'>>;
+  getTodos?: Resolver<ResolversTypes['TodoConnection'], ParentType, ContextType, RequireFields<QueryGetTodosArgs, 'first' | 'sortOrder'>>;
   hello?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 
@@ -216,10 +247,26 @@ export type TodoResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type TodoConnectionResolvers<ContextType = any, ParentType extends ResolversParentTypes['TodoConnection'] = ResolversParentTypes['TodoConnection']> = {
+  edges?: Resolver<Array<ResolversTypes['TodoEdge']>, ParentType, ContextType>;
+  pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
+  totalCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TodoEdgeResolvers<ContextType = any, ParentType extends ResolversParentTypes['TodoEdge'] = ResolversParentTypes['TodoEdge']> = {
+  cursor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  node?: Resolver<ResolversTypes['Todo'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
+  PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;
+  TodoConnection?: TodoConnectionResolvers<ContextType>;
+  TodoEdge?: TodoEdgeResolvers<ContextType>;
 };
 
