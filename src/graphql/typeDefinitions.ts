@@ -1,10 +1,13 @@
 export const typeDefs = /* GraphQL */ `
+
+scalar DateTime
+
   type Todo {
     id: ID!
     title: String!
     completed: Boolean!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
   }
 
   input CreateTodoInput {
