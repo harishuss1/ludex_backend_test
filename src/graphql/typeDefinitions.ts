@@ -2,6 +2,11 @@ export const typeDefs = /* GraphQL */ `
 
 scalar DateTime
 
+enum SortOrder {
+  asc
+  desc
+}
+
   type Todo {
     id: ID!
     title: String!
@@ -19,9 +24,10 @@ scalar DateTime
     title: String!
   }
 
+  
   type Query {
     hello: String
-    getTodos(limit: Int = 10, offset: Int = 0): [Todo!]!           
+    getTodos(limit: Int = 10, offset: Int = 0, completed: Boolean, sortOrder: SortOrder = desc): [Todo!]!
     getTodoById(id: ID!): Todo   
     getCompletedTodos: [Todo!]!  
     getIncompleteTodos: [Todo!]! 
